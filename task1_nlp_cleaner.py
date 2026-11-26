@@ -34,6 +34,18 @@ STOP_WORDS = {
     "from", "or", "can", "how", "what", "after",
 }
 
+def simple_stem(word):
+    # only strip a suffix if enough letters remain afterwards
+    if word.endswith("ing") and len(word) > 5:
+        return word[:-3]
+    if word.endswith("ies") and len(word) > 4:
+        return word[:-3] + "y"
+    if word.endswith("ed") and len(word) > 4:
+        return word[:-2]
+    if word.endswith("s") and not word.endswith("ss") and len(word) > 3:
+        return word[:-1]
+    return word
+
 def preprocess_text(text):
     # 1. lowercase
     text = text.lower()
@@ -46,6 +58,9 @@ def preprocess_text(text):
 
     # 4. remove stop words
     tokens = [word for word in tokens if word not in STOP_WORDS]
+
+    # 5. (bonus) stem each word
+    tokens = [simple_stem(word) for word in tokens]
 
     return tokens
 
