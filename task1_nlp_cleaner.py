@@ -1,5 +1,6 @@
 import json
 import re
+from collections import Counter
 
 def load_tickets(path):
     with open(path, "r", encoding="utf-8") as f:
@@ -48,8 +49,32 @@ def preprocess_text(text):
 
     return tokens
 
+def analyze_tickets(cleaned_tickets):
+    category_counts = Counter()
+    keyword_counts = Counter()
+    records = []
+
+    for ticket in cleaned_tickets:
+        tokens = preprocess_text(ticket["query"])
+
+        category_counts[ticket["category"]] += 1
+        keyword_counts.update(tokens)
+
+        records.append({**ticket, "tokens": tokens})
+
+    print("Tickets per category:", dict(category_counts))
+    print("Top 5 keywords:")
+    for word, count in keyword_counts.most_common(5):
+        print(f"  {word}: {count}")
+
+    with open("data/cleaned_tickets.json", "w", encoding="utf-8") as f:
+        json.dump(records, f, indent=2)
+
+    return records
+
 if __name__ == "__main__":
     tickets = load_tickets("data/support_tickets.json")
     cleaned = clean_tickets(tickets)
-    for ticket in cleaned:
-        print(ticket["ticket_id"], preprocess_text(ticket["query"]))
+    analyze_tickets(cleaned)
+    
+    
