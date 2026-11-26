@@ -28,10 +28,28 @@ def clean_tickets(tickets):
 
     return cleaned
 
-    return cleaned
+STOP_WORDS = {
+    "the", "is", "on", "and", "do", "i", "my", "to",
+    "from", "or", "can", "how", "what", "after",
+}
+
+def preprocess_text(text):
+    # 1. lowercase
+    text = text.lower()
+
+    # 2. remove punctuation: keep only letters, numbers and spaces
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+
+    # 3. tokenize: split on whitespace
+    tokens = text.split()
+
+    # 4. remove stop words
+    tokens = [word for word in tokens if word not in STOP_WORDS]
+
+    return tokens
 
 if __name__ == "__main__":
     tickets = load_tickets("data/support_tickets.json")
     cleaned = clean_tickets(tickets)
-    print("After cleaning:", len(cleaned))
-    print(cleaned[0]["query"])
+    for ticket in cleaned:
+        print(ticket["ticket_id"], preprocess_text(ticket["query"]))
