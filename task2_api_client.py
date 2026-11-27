@@ -20,9 +20,23 @@ def transform_post(post):
 def fetch_documents(url=API_URL):
     logger.info("Starting request to %s", url)
 
-    response = requests.get(url, timeout=10)
-    posts = response.json()
-    documents = [transform_post(post) for post in posts[:5]]
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        posts = response.json()
+        documents = [transform_post(post) for post in posts[:5]]
+
+    except requests.exceptions.Timeout:
+        logger.error("Request timed out after 10 seconds.")
+        return []
+
+    except requests.exceptions.ConnectionError:
+        logger.error("Connection error (offline or bad URL).")
+        return []
+
+    except requests.exceptions.HTTPError as err:
+        logger.error("HTTP error: %s", err)
+        return []
 
     logger.info("Request succeeded. Fetched %d documents.", len(documents))
     return documents
