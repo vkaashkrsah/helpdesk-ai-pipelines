@@ -54,3 +54,19 @@ Answer using only the CONTEXT above and cite the source.
   consistent. The same question should give the same answer, and low
   randomness lowers the chance of invented policies. High values (0.8 to 1.0)
   suit creative writing, not policy answers.
+
+## Scenario B: RAG Document Chunking Strategy
+
+### Why not one embedding for the whole 50-page PDF?
+
+- **One vector blurs everything:** an embedding has a fixed size, so 50 pages of different topics (leave, expenses, IT, conduct) get averaged into one vague vector. A question about sick leave would not match it strongly.
+- **Input limits:** embedding models accept only a limited amount of text (a few thousand tokens at most). Most of a 50-page document would be cut off and never indexed.
+- **Poor retrieval:** the search could only return the entire PDF. That is too much text for the LLM's context window, costs more, and buries the one relevant paragraph.
+- **No precise citations:** with chunks, we can cite the exact section that answered the question.
+
+### Why is chunk overlap important?
+
+- **Chunk edges can cut an idea in half:** a fixed split can end in the middle of a sentence or rule, so neither chunk has the full meaning. For example, "Employees get 12 sick days" could end one chunk, while "this applies to full-time staff only" starts the next.
+- **Overlap repeats context:** with about 50 words shared between neighbouring chunks, the text around each boundary appears in both, so at least one chunk contains the complete idea.
+- **Better retrieval:** the right chunk is more likely to match the question.
+- **Trade-off:** overlap creates some duplicate text and more chunks to store, so I would keep it small, around 10 to 15 percent of the chunk size.
