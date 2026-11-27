@@ -52,11 +52,15 @@ def fetch_documents(url=API_URL):
     except requests.exceptions.HTTPError as err:
         logger.warning("HTTP error: %s. Using fallback documents.", err)
         return list(FALLBACK_DOCUMENTS)
+    
+    except (ValueError, KeyError) as err:
+        logger.warning("Unexpected response format: %s. Using fallback documents.", err)
+        return list(FALLBACK_DOCUMENTS)
 
     logger.info("Request succeeded. Fetched %d documents.", len(documents))
     return documents
 
 if __name__ == "__main__":
-    docs = fetch_documents("https://jsonplaceholder.typicode.invalid/posts")
+    docs = fetch_documents("https://example.com")
     for doc in docs:
         print(doc)
