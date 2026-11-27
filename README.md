@@ -95,3 +95,49 @@ starts and succeeds.
 
 To test the fallback, turn off your Wi-Fi and run the script again. You
 should see a `WARNING` log and 2 mock documents, and the program does not crash.
+
+## Assumptions
+
+- Scripts are run from the project root, because file paths like
+  `data/support_tickets.json` are relative.
+- HTML tags are replaced with a space (not removed) so neighbouring words
+  do not join together.
+- The stop-word list is the small example list from the assignment.
+- Stemming is a basic suffix rule (removes a trailing "s"), so it is not
+  perfect. For example, "status" becomes "statu".
+- Only the first 5 posts from the API are used.
+- The fallback documents use the same fields as real documents, so
+  downstream code does not need a special case.
+
+## Challenges and What I Learned
+
+- **Virtual environment committed by mistake:** my first commit included the
+  `venv` folder because `.gitignore` did not exist yet. I fixed it by
+  restarting the Git history before pushing, and now create `.gitignore`
+  before the first `git add`.
+- **GitHub email privacy error (GH007):** my first push was rejected because
+  my commit used a private email address. I fixed it by using GitHub's
+  noreply email in my Git configuration.
+- **Simple stemming has limits:** my first stemmer had several suffix rules,
+  and they cut real words wrongly (for example, "speed" became "spe"). I
+  simplified it to one plural rule that I can explain and defend.
+- **Handling failures:** a 200 response can still contain bad data, so I
+  catch invalid JSON and missing fields as well as timeouts, connection
+  errors and HTTP errors.
+- **Testing error handling:** I tested the fallback with a broken URL, a
+  404 URL, and a page that is not JSON.
+- **A test URL left in the main block:** while testing the fallback I changed
+  the script to call a broken URL and nearly committed it. This would have
+  made the script always return mock data. I now put the real call back and
+  re-run the script before every commit.
+- **Choosing what to catch:** `requests` does not raise an error for a 404 by
+  default, so I added `raise_for_status()` to turn bad status codes into
+  exceptions I could handle.
+- **Simple stemming has limits:** my first stemmer had several suffix rules,
+  and they cut real words wrongly (for example, "speed" became "spe"). I
+  simplified it to one plural rule that I can explain and defend.
+
+## Notes
+
+I used an AI assistant to help me learn and debug, and I wrote and tested
+each step myself. I can explain every line of the code.
