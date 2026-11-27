@@ -35,13 +35,7 @@ def clean_tickets(tickets):
     return cleaned
 
 def simple_stem(word):
-    # only strip a suffix if enough letters remain afterwards
-    if word.endswith("ing") and len(word) > 5:
-        return word[:-3]
-    if word.endswith("ies") and len(word) > 4:
-        return word[:-3] + "y"
-    if word.endswith("ed") and len(word) > 4:
-        return word[:-2]
+    """Basic stemming: turn plurals like 'days' into 'day'."""
     if word.endswith("s") and not word.endswith("ss") and len(word) > 3:
         return word[:-1]
     return word
