@@ -82,22 +82,8 @@ def analyze_tickets(cleaned_tickets):
     return records
 
 if __name__ == "__main__":
-    # Step 1: load
     tickets = load_tickets("data/support_tickets.json")
-    print("Raw tickets:", len(tickets))
-
-    # Step 2: clean
     cleaned = clean_tickets(tickets)
-    print("After cleaning:", len(cleaned))
-    print("First cleaned query:", cleaned[0]["query"])
-
-    # Step 3: preprocess each ticket
-    print("\nTokens per ticket:")
-    for ticket in cleaned:
-        print(" ", ticket["ticket_id"], preprocess_text(ticket["query"]))
-
-    # Step 4: analyze (prints counts and top 5, saves JSON)
-    print("\nAnalysis:")
     analyze_tickets(cleaned)
     
     
