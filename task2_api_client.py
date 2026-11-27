@@ -9,6 +9,21 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+FALLBACK_DOCUMENTS = [
+    {
+        "doc_id": 0,
+        "title": "Fallback document one",
+        "content": "This is mock content used when the API is unavailable.",
+        "word_count": 10,
+    },
+    {
+        "doc_id": -1,
+        "title": "Fallback document two",
+        "content": "More mock content so downstream code still has data.",
+        "word_count": 9,
+    },
+]
+
 def transform_post(post):
     return {
         "doc_id": post["id"],
@@ -27,16 +42,16 @@ def fetch_documents(url=API_URL):
         documents = [transform_post(post) for post in posts[:5]]
 
     except requests.exceptions.Timeout:
-        logger.error("Request timed out after 10 seconds.")
-        return []
+        logger.warning("Request timed out after 10 seconds. Using fallback documents.")
+        return FALLBACK_DOCUMENTS
 
     except requests.exceptions.ConnectionError:
-        logger.error("Connection error (offline or bad URL).")
-        return []
+        logger.warning("Connection error (offline or bad URL). Using fallback documents.")
+        return FALLBACK_DOCUMENTS
 
     except requests.exceptions.HTTPError as err:
-        logger.error("HTTP error: %s", err)
-        return []
+        logger.warning("HTTP error: %s. Using fallback documents.", err)
+        return FALLBACK_DOCUMENTS
 
     logger.info("Request succeeded. Fetched %d documents.", len(documents))
     return documents
