@@ -43,20 +43,20 @@ def fetch_documents(url=API_URL):
 
     except requests.exceptions.Timeout:
         logger.warning("Request timed out after 10 seconds. Using fallback documents.")
-        return FALLBACK_DOCUMENTS
+        return list(FALLBACK_DOCUMENTS)
 
     except requests.exceptions.ConnectionError:
         logger.warning("Connection error (offline or bad URL). Using fallback documents.")
-        return FALLBACK_DOCUMENTS
+        return list(FALLBACK_DOCUMENTS)
 
     except requests.exceptions.HTTPError as err:
         logger.warning("HTTP error: %s. Using fallback documents.", err)
-        return FALLBACK_DOCUMENTS
+        return list(FALLBACK_DOCUMENTS)
 
     logger.info("Request succeeded. Fetched %d documents.", len(documents))
     return documents
 
 if __name__ == "__main__":
-    docs = fetch_documents()
+    docs = fetch_documents("https://jsonplaceholder.typicode.invalid/posts")
     for doc in docs:
         print(doc)
