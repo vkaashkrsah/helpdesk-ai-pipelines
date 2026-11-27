@@ -1,7 +1,7 @@
 [
-{"ticket_id": "T-101", "category": "IT", "query": " How do I reset my VPN password?? Urgent!! ", "status": "open"},
+{"ticket_id": "T-101", "category": "IT", "query": " How do I reset my VPN password??<br>Urgent!! ", "status": "open"},
 {"ticket_id": "T-102", "category": "HR", "query": "What is the company policy on remote work and WFH days?", "status": "closed"},
-{"ticket_id": "T-101", "category": "IT", "query": " How do I reset my VPN password?? Urgent!! ", "status": "open"},
+{"ticket_id": "T-101", "category": "IT", "query": " How do I reset my VPN password??<br>Urgent!! ", "status": "open"},
 {"ticket_id": "T-103", "category": "IT", "query": "My laptop screen is flickering after the latest Windows update...", "status": "open"},
 {"ticket_id": "T-104", "category": "HR", "query": " ", "status": "open"}, 
 {"ticket_id": "T-105", "category": "Finance", "query": "How can I submit my travel & meal expense reimbursement receipts?", "status": "closed"}, 

@@ -2,6 +2,11 @@ import json
 import re
 from collections import Counter
 
+STOP_WORDS = {
+    "the", "is", "on", "and", "do", "i", "my", "to",
+    "from", "or", "can", "how", "what", "after",
+}
+
 def load_tickets(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -28,11 +33,6 @@ def clean_tickets(tickets):
         cleaned.append({**ticket, "query": query})
 
     return cleaned
-
-STOP_WORDS = {
-    "the", "is", "on", "and", "do", "i", "my", "to",
-    "from", "or", "can", "how", "what", "after",
-}
 
 def simple_stem(word):
     # only strip a suffix if enough letters remain afterwards
