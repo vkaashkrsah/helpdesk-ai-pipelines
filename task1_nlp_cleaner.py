@@ -1,8 +1,8 @@
-import json  # read and write JSON files
-import re  # regular expressions for pattern-based text cleaning
-from collections import Counter  # a dictionary that counts items
+import json  
+import re  
+from collections import Counter  
 
-# Common words that carry little meaning; a set gives fast "in" checks
+
 STOP_WORDS = {
     "the", "is", "on", "and", "do", "i", "my", "to",
     "from", "or", "can", "how", "what", "after",
