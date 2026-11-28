@@ -137,8 +137,3 @@ should see a `WARNING` log and 2 mock documents, and the program does not crash.
 - **Choosing what to catch:** `requests` does not raise an error for a 404 by
   default, so I added `raise_for_status()` to turn bad status codes into
   exceptions I could handle.
-
-## Notes
-
-I used an AI assistant to help me learn and debug, and I wrote and tested
-each step myself. I can explain every line of the code.
