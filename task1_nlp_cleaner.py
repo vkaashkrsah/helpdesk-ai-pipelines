@@ -1,6 +1,6 @@
-import json  
-import re  
-from collections import Counter  
+import json
+import re
+from collections import Counter
 
 
 STOP_WORDS = {

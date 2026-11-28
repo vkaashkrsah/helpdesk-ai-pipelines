@@ -21,7 +21,8 @@ helpdesk-ai-pipelines/
 
 ## Setup
 
-You need Python 3.8 or newer and Git.
+You need Python 3.10 or newer (this project was built and tested on
+Python 3.14) and Git.
 
 **1. Clone the repository**
 
@@ -102,6 +103,8 @@ should see a `WARNING` log and 2 mock documents, and the program does not crash.
   `data/support_tickets.json` are relative.
 - HTML tags are replaced with a space (not removed) so neighbouring words
   do not join together.
+- The first ticket's query contains a `<br>` tag, which is used to test the
+  HTML-removal step.
 - The stop-word list is the small example list from the assignment.
 - Stemming is a basic suffix rule (removes a trailing "s"), so it is not
   perfect. For example, "status" becomes "statu".
@@ -118,9 +121,10 @@ should see a `WARNING` log and 2 mock documents, and the program does not crash.
 - **GitHub email privacy error (GH007):** my first push was rejected because
   my commit used a private email address. I fixed it by using GitHub's
   noreply email in my Git configuration.
-- **Simple stemming has limits:** my first stemmer had several suffix rules,
-  and they cut real words wrongly (for example, "speed" became "spe"). I
-  simplified it to one plural rule that I can explain and defend.
+- **Simple stemming has limits:** my first stemmer had several suffix rules
+  that could cut real words wrongly (for example, "speed" would become
+  "spe"). I spotted this while reviewing and simplified it to one plural
+  rule that I can explain and defend.
 - **Handling failures:** a 200 response can still contain bad data, so I
   catch invalid JSON and missing fields as well as timeouts, connection
   errors and HTTP errors.
@@ -133,9 +137,6 @@ should see a `WARNING` log and 2 mock documents, and the program does not crash.
 - **Choosing what to catch:** `requests` does not raise an error for a 404 by
   default, so I added `raise_for_status()` to turn bad status codes into
   exceptions I could handle.
-- **Simple stemming has limits:** my first stemmer had several suffix rules,
-  and they cut real words wrongly (for example, "speed" became "spe"). I
-  simplified it to one plural rule that I can explain and defend.
 
 ## Notes
 
